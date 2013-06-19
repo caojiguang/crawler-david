@@ -27,30 +27,27 @@ public class TemplateFactory {
     public void init() {
         logger.info("begin to init template!");
         map = new HashMap<String, TemplateNovelSeed>();
-//        List<TemplateNovelSeed> templates = templateMapper.selectAllNovelSeed();
-//        for ( TemplateNovelSeed template : templates ) {        
-//            String[] webNames = template.getContents_url().split(",");
-//            for (String webName : webNames) {
-//                if (StringUtils.isBlank(webName)) {
-//                    continue;
-//                }
-//                map.put(webName, template);
-//            }
-//        
-//        }
-        
-        TemplateNovelSeed template = templateMapper.selectAllNovelSeedByContentUrl("http://www.23hh.com/book/3/3045/");
-        map.put("http://www.23hh.com/book/3/3045/", template);
-        String[] webNames = template.getContents_url().split(",");
-        for (String webName : webNames) {
-            if (StringUtils.isBlank(webName)) {
-                continue;
+        List<TemplateNovelSeed> templates = templateMapper.selectAllNovelSeed();
+        for ( TemplateNovelSeed template : templates ) {        
+            String[] webNames = template.getContents_url().split(",");
+            for (String webName : webNames) {
+                if (StringUtils.isBlank(webName)) {
+                    continue;
+                }
+                map.put(webName, template);
             }
-            logger.info("template");
-        }      
-
+        }
+        logger.info("init load, template size : " + map.size());
         
-//        logger.info("template size : " + map.size());
+//        TemplateNovelSeed template = templateMapper.selectAllNovelSeedByContentUrl("http://www.23hh.com/book/3/3045/");
+//        map.put(template.getContents_url(), template);
+//        String[] webNames = template.getContents_url().split(",");
+//        for (String webName : webNames) {
+//            if (StringUtils.isBlank(webName)) {
+//                continue;
+//            }
+//            logger.info("template");
+//        }      
         
     }
 
@@ -58,23 +55,22 @@ public class TemplateFactory {
         logger.info("begin to reload template!");
         Map<String, TemplateNovelSeed> tmpMap = new HashMap<String, TemplateNovelSeed>();
 
-        TemplateNovelSeed template = templateMapper.selectAllNovelSeedByContentUrl("http://www.23hh.com/book/3/3045/");// .selectAllNovelSeed();
-//        for (TemplateNovelSeed template : templates) {
-        	String[] webNames = template.getContents_url().split(",");
-        	for (String webName : webNames) {
-        		if (StringUtils.isBlank(webName)) {
-        			continue;
-        		}
-        		logger.info(template.toString());
-            	tmpMap.put(webName, template);
-        	}
-//        }
-
+        List<TemplateNovelSeed> templates = templateMapper.selectAllNovelSeed();
+        for ( TemplateNovelSeed template : templates ) {        
+            String[] webNames = template.getContents_url().split(",");
+            for (String webName : webNames) {
+                if (StringUtils.isBlank(webName)) {
+                    continue;
+                }
+                map.put(webName, template);
+            }
+        }
+        
+        logger.info("reload template size : " + map.size());
+        
         if (tmpMap.size() != 0) {
         	map = tmpMap;
         }
-        
-        logger.info("template size : " + map.size());
     }
 
     public TemplateNovelSeed getTemplate(String webname) {
@@ -85,20 +81,4 @@ public class TemplateFactory {
         map.put(webName, template);
     }
 
-//    public TemplateNovelSeed loadTemplateById(int id) {
-//        if (map == null) {
-//            map = new HashMap<String, TemplateNovelSeed>();
-//        }
-//        Template template = this.templateMapper.findById(id);
-//        
-//    	String[] webNames = template.getWebName().split(",");
-//    	for (String webName : webNames) {
-//    		if (StringUtils.isBlank(webName)) {
-//    			continue;
-//    		}
-//    		System.out.println("webName:" + webName);
-//        	map.put(webName, template);
-//    	}
-//        return template;
-//    }
 }

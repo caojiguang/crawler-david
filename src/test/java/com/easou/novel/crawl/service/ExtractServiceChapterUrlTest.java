@@ -47,16 +47,16 @@ public class ExtractServiceChapterUrlTest {
 //	@Test
 	public void extractCatalogTest(){
 		try {
-			String entryWay = "http://www.23hh.com/";
+			String entryWay = "http://www.dajiadu.net/";
 			String charset = null;
 			CrawlUrl crawlUrl = new CrawlUrl();
 			crawlUrl.setEntryWay(entryWay);
-			crawlUrl.setUri(new URI("http://www.23hh.com/book/3/3045/"));
+			crawlUrl.setUri(new URI("http://www.dajiadu.net/files/article/html/15/15523/index.html"));
 			System.out.println(crawlUrl.getUri().toString());
 			crawlUrl.setCatalog_level(0);
 			String body = httpClientService.getResponseBodyByGet(crawlUrl.getUri().toString(), charset);
 			crawlUrl.setBody(body);
-			
+			System.out.println(body);
 			List<CrawlUrl> crawlUrls = extractService.extractHtmlCatalog(crawlUrl);
 			for(CrawlUrl u : crawlUrls){
 				System.out.println(u.getRankOrder() + " : " + u.getCatalog_title() + " : " + u.getUri());
@@ -66,7 +66,7 @@ public class ExtractServiceChapterUrlTest {
 		}
 	}
 	
-//	@Test
+	@Test
 	public void extractHtmlContentTest(){
 		String entryWay = "http://www.23hh.com/";
 		String url = "http://www.23hh.com/book/3/3045/11653535.html";
@@ -85,7 +85,7 @@ public class ExtractServiceChapterUrlTest {
 		System.out.println(crawlBasicInfo.toString().length() );
 	}
 	
-   @Test
+//   @Test
     public void writeChapterPageInfoTest(){
         String entryWay = "http://www.23hh.com/";
         String url = "http://www.23hh.com/book/3/3045/11653535.html";

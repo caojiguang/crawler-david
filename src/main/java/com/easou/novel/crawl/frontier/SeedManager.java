@@ -36,6 +36,7 @@ public class SeedManager {
 				if(uris != null){
 					for(String uri :uris){
 						queueRedisTemplate.opsForList().leftPush("wq:"+classkey, uri);
+						System.out.println("queueRedisTemplate, push: " + "wq:" + classkey + ": " + uri);
 					}
 				}
 			}else{

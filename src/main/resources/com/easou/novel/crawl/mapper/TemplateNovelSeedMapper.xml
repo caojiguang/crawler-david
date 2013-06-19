@@ -15,6 +15,7 @@
 		<result property="contents_url" column="contents_url" javaType="string" jdbcType="VARCHAR"/>
 		<result property="content_url_reg" column="content_url_reg" javaType="string" jdbcType="VARCHAR"/>
 		<result property="charset" column="charset" javaType="string" jdbcType="VARCHAR"/>
+		<result property="content_reg" column="content_reg" javaType="string" jdbcType="VARCHAR"/>
 	</resultMap>
 	<select id="selectAllNovelSeed" resultMap="novelSeedMapper">
 		<![CDATA[
@@ -31,9 +32,10 @@
 				cover_url,
 				contents_url,
 				content_url_reg,
-				charset
+				charset,
+				content_reg
 			FROM
-				 `23hh&dzxswInTop5000` limit 1;
+				 `BookSeeds`;
 		]]>
 	</select>
 	<select id="selectAllNovelSeedByContentUrl" resultMap="novelSeedMapper" parameterType="string">
@@ -51,9 +53,10 @@
 				cover_url,
 				contents_url,
 				content_url_reg,
-				charset
+				charset,
+				content_reg
 			FROM
-				 `23hh&dzxswInTop5000`
+				 `BookSeeds`
 			WHERE contents_url=#{contents_url}
 		]]>
 	</select>

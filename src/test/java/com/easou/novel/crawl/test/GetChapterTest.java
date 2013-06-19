@@ -21,8 +21,8 @@ public class GetChapterTest {
 
     @Test
     public void getChapter(){
-        String queueName = String.valueOf(56597);
-        List<CrawlBasicInfo> chapterInfos = redisService.popChapterInfo(queueName, 1, 10);
+        String queueName = String.valueOf(2);
+        List<CrawlBasicInfo> chapterInfos = redisService.popChapterInfo(queueName, 1, 100);
         if(null == chapterInfos || chapterInfos.size() < 1)
             return;
         System.out.println("---------------------" );

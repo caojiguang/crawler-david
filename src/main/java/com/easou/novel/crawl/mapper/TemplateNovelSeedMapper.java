@@ -8,7 +8,6 @@ import com.easou.novel.crawl.model.TemplateNovelSeed;
 
 @Repository("novelSeedMapper")
 public interface TemplateNovelSeedMapper {
-    List<TemplateNovelSeed> selectAllNovelSeed();
-    
+    List<TemplateNovelSeed> selectAllNovelSeed();    
     TemplateNovelSeed  selectAllNovelSeedByContentUrl(String contents_url);
 }

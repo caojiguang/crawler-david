@@ -77,9 +77,6 @@ public class ExtractChapterUrl implements IExtractServiceChapterUrl {
         String url = "";
         int sort = 0;
         for (Element element : elements) {
-            // chapter sort auto increment
-            sort ++;
-            
             try {
                 url = element.attr("abs:href");
                 // content url not valide ?
@@ -95,6 +92,9 @@ public class ExtractChapterUrl implements IExtractServiceChapterUrl {
                 url = url.trim();
                // if match content url regex ?
                 if(MatcherUtil.isMatch(url,   Arrays.asList(template.getContent_url_reg()))) {
+                 // chapter sort auto increment
+                    sort ++;
+                    
                     CrawlUrl crawlUrl = new CrawlUrl(catalogUrl.getEntryWay(), URI.create(url), 1, 0);
                     crawlUrl.setCatalog_title(element.text());
                     crawlUrl.setRankOrder(sort); //章节序号
@@ -131,7 +131,7 @@ public class ExtractChapterUrl implements IExtractServiceChapterUrl {
             crawlBasicInfo.setNovelid(template.getId());
         
         TemplateBasicInfo templateBasicInfo = new TemplateBasicInfo(); 
-        boolean result = parseAndPackage(templateBasicInfo, contentUrl.getBody(), document, crawlBasicInfo);
+        boolean result = parseAndPackage(templateBasicInfo, contentUrl, document, crawlBasicInfo);
         if (!result) {
             return new CrawlBasicInfo();
         }
@@ -158,8 +158,12 @@ public class ExtractChapterUrl implements IExtractServiceChapterUrl {
         return crawlBasicInfo;
     }
     
-    private boolean parseAndPackage(TemplateBasicInfo templateBasicInfo, String htmlBody, Document document, CrawlBasicInfo crawlBasicInfo){
-        String value = fixedHtmlContent("select", "[{'action':'attr','key':'id','value':'contents'}]", htmlBody, document);//根据表达式得到指定的内
+    private boolean parseAndPackage(TemplateBasicInfo templateBasicInfo, CrawlUrl crawlUrl, Document document, CrawlBasicInfo crawlBasicInfo){
+        TemplateNovelSeed templateNovelSeed = templateFactory.getTemplate(crawlUrl.getEntryWay());
+        if(null == templateNovelSeed)
+            return false;
+//        String value = fixedHtmlContent("select", "[{'action':'attr','key':'id','value':'contents'}]", crawlUrl.getBody(), document);//根据表达式得到指定的内
+        String value = fixedHtmlContent("select", templateNovelSeed.getContent_reg(), crawlUrl.getBody(), document);//根据表达式得到指定的内
         if(value != null){
             value = HtmlUtil.removeScriptTags(value);//去掉script、style等标签
             value = HtmlUtil.replaceSign(value);//替换&nbsp;等标记

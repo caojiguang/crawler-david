@@ -16,6 +16,7 @@ public class TemplateNovelSeed {
     private String cover_url;
     private String contents_url;
     private String content_url_reg;
+    private String content_reg;
     private String charset;
     private String source;
     private String classify;
@@ -116,5 +117,11 @@ public class TemplateNovelSeed {
     }
     public void setContents_url(String contents_url) {
         this.contents_url = contents_url;
+    }
+    public String getContent_reg() {
+        return content_reg;
+    }
+    public void setContent_reg(String content_reg) {
+        this.content_reg = content_reg;
     }
 }
