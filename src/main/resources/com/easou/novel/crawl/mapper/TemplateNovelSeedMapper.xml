@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easou.novel.crawl.mapper.TemplateNovelSeedMapper">
+	<resultMap type="com.easou.novel.crawl.model.TemplateNovelSeed" id="novelSeedMapper">
+		<result property="id" column="id" javaType="int" jdbcType="INTEGER"/>
+		<result property="sort" column="sort" javaType="int" jdbcType="INTEGER"/>
+		<result property="gid" column="gid" javaType="int" jdbcType="INTEGER"/>
+		<result property="authorname" column="authorname" javaType="string" jdbcType="VARCHAR"/>
+		<result property="name" column="name" javaType="string" jdbcType="VARCHAR"/>
+		<result property="description" column="description" javaType="string" jdbcType="VARCHAR"/>
+		<result property="fromweb" column="fromweb" javaType="string" jdbcType="VARCHAR"/>
+		<result property="ori_novelid" column="ori_novelid" javaType="int" jdbcType="INTEGER"/>
+		<result property="tag" column="tag" javaType="string" jdbcType="VARCHAR"/>
+		<result property="cover_url" column="cover_url" javaType="string" jdbcType="VARCHAR"/>
+		<result property="contents_url" column="contents_url" javaType="string" jdbcType="VARCHAR"/>
+		<result property="content_url_reg" column="content_url_reg" javaType="string" jdbcType="VARCHAR"/>
+		<result property="charset" column="charset" javaType="string" jdbcType="VARCHAR"/>
+	</resultMap>
+	<select id="selectAllNovelSeed" resultMap="novelSeedMapper">
+		<![CDATA[
+			SELECT 
+				id,
+				sort,
+				gid,
+				authorname,
+				name,
+				description,
+				fromweb,
+				ori_novelid,
+				tag,
+				cover_url,
+				contents_url,
+				content_url_reg,
+				charset
+			FROM
+				 `23hh&dzxswInTop5000` limit 1;
+		]]>
+	</select>
+	<select id="selectAllNovelSeedByContentUrl" resultMap="novelSeedMapper" parameterType="string">
+		<![CDATA[
+			SELECT 
+				id,
+				sort,
+				gid,
+				authorname,
+				name,
+				description,
+				fromweb,
+				ori_novelid,
+				tag,
+				cover_url,
+				contents_url,
+				content_url_reg,
+				charset
+			FROM
+				 `23hh&dzxswInTop5000`
+			WHERE contents_url=#{contents_url}
+		]]>
+	</select>
+</mapper>
