@@ -21,13 +21,15 @@ public class GetChapterTest {
 
     @Test
     public void getChapter(){
-        String queueName = String.valueOf(2);
-        List<CrawlBasicInfo> chapterInfos = redisService.popChapterInfo(queueName, 1, 100);
+        String queueName = String.valueOf(1);
+        List<CrawlBasicInfo> chapterInfos = redisService.popChapterInfo(queueName, 1, Integer.MAX_VALUE);
         if(null == chapterInfos || chapterInfos.size() < 1)
             return;
         System.out.println("---------------------" );
+        System.out.println(chapterInfos.get(0).getEntryWay());
         for(CrawlBasicInfo chapter : chapterInfos) {
-            System.out.println(chapter.getRankOrder() + " :" + chapter.getCatalogTitle() + " :"  + chapter.getContent().substring(0, 20) );
+//            System.out.println(chapter.getRankOrder() + " :" + chapter.getCatalogTitle() + " :"  + chapter.getContent().substring(0, 20) );
+            System.out.println(chapter.getRankOrder() + " :" + chapter.getCatalogTitle() + " :"  + chapter.getPageUrl());
         }
     }
     

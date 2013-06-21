@@ -15,6 +15,8 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -38,6 +40,8 @@ public class WorkQueueFrontier {
 	@Resource(name="uriUniqFilter")
 	private UriUniqFilter uriUniqFilter ;
 
+	private static Logger logger = LoggerFactory.getLogger(WorkQueueFrontier.class);
+	
 	@PostConstruct
 	public void init() {
 		queueAssignmentPolicy = new HostnameQueueAssignmentPolicy();
@@ -76,16 +80,23 @@ public class WorkQueueFrontier {
 	public void schedule(CrawlUrl curl) {
 		if (curl.isForce()) {
 			uriUniqFilter.addUrl(curl);
-			recive(curl);
+			receive(curl);
 		} else if (uriUniqFilter.addUrl(curl)) {
-			recive(curl);
+			receive(curl);
 		}
 	}
 
-	private void recive(CrawlUrl curl) {
+	private void receive(CrawlUrl curl) {
 		String key = queueAssignmentPolicy.getClassKey(curl);
 		WorkQueue wq = getQueue(key);
-		wq.push(curl);
+		int retry = 0;
+		while(!wq.push(curl)) {
+		    retry ++;
+		    if(retry > 3) {
+		        logger.error("Failed while push to redis, " + CrawlUrl.toJson(curl) );
+		        break;
+		    }
+		}
 		sendToQueue(wq);
 	}
 	

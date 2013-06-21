@@ -21,15 +21,12 @@ import org.perf4j.log4j.Log4JStopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.easou.novel.crawl.factory.TemplateFactory;
 import com.easou.novel.crawl.frontier.UriUniqFilter;
 import com.easou.novel.crawl.model.CrawlBasicInfo;
-import com.easou.novel.crawl.model.CrawlImage;
 import com.easou.novel.crawl.model.CrawlUrl;
-import com.easou.novel.crawl.model.Template;
 import com.easou.novel.crawl.model.TemplateBasicInfo;
 import com.easou.novel.crawl.model.TemplateNovelSeed;
 import com.easou.novel.crawl.service.IExtractServiceChapterUrl;
@@ -84,16 +81,16 @@ public class ExtractChapterUrl implements IExtractServiceChapterUrl {
                     continue;
                 }
                 
-                // content url already exists ?
-                if(uriUniqFilter.urlExist(url))
-                    continue;
-                
                 url = url.replaceAll("#[^#?&]+", "");
                 url = url.trim();
                // if match content url regex ?
                 if(MatcherUtil.isMatch(url,   Arrays.asList(template.getContent_url_reg()))) {
                  // chapter sort auto increment
                     sort ++;
+                    
+                    // content url already exists ?
+                    if(uriUniqFilter.urlExist(url))
+                        continue;
                     
                     CrawlUrl crawlUrl = new CrawlUrl(catalogUrl.getEntryWay(), URI.create(url), 1, 0);
                     crawlUrl.setCatalog_title(element.text());

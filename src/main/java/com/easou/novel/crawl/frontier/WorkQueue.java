@@ -1,15 +1,19 @@
 package com.easou.novel.crawl.frontier;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import com.easou.novel.crawl.model.CrawlUrl;
+import com.easou.novel.crawl.task.CrawlTask;
 
 public class WorkQueue implements Comparable<WorkQueue>{
     protected final String classKey;
     private long wakeTime = 0;
 	private StringRedisTemplate redisTemplate;
     private boolean isHeld = false;
-	
+    private static Logger logger = LoggerFactory.getLogger(WorkQueue.class);
+    
     public WorkQueue(final String pClassKey) {
         this.classKey = pClassKey;
     }
@@ -22,18 +26,21 @@ public class WorkQueue implements Comparable<WorkQueue>{
 				return curl;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("pop error!");
 		}
 		
 		return null;
 	}
-	public void push(CrawlUrl curl){
-		try {
-			String url = CrawlUrl.toJson(curl);
+	public boolean push(CrawlUrl curl){
+	    String url = CrawlUrl.toJson(curl);
+	    try {
 			redisTemplate.opsForList().leftPush("wq:"+classKey, url);
+			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("push error " + "wq:"+classKey +" : " + url);
+			return false;
 		}
+	    
 	}
 	
 	@Override
